@@ -1,0 +1,142 @@
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Visualizador AR de Bogie Ferroviario</title>
+
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f5f7;
+      color: #222;
+    }
+
+    header {
+      background: #172536;
+      color: white;
+      padding: 16px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    model-viewer {
+      display: block;
+      width: 100%;
+      height: 60vh;
+      min-height: 350px;
+      background: white;
+      border-radius: 12px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .datos {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .dato {
+      background: #f0f3f6;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .dato p {
+      margin-bottom: 0;
+    }
+
+    .ar-button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #1769aa;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .datos {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>Visualizador AR Bogie</h2>
+</header>
+
+<main>
+  <h2>Bogie Cali</h2>
+
+  <model-viewer
+    id="bogie"
+    src="Bogie.glb"
+    alt="Modelo 3D del bogie"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    ar-placement="floor"
+    ar-scale="fixed"
+    camera-controls
+    shadow-intensity="1"
+    exposure="1">
+
+    <button class="ar-button" slot="ar-button">
+      Visualizar en mi espacio
+    </button>
+
+  </model-viewer>
+
+  <section class="panel">
+    <h2>Bogie</h2>
+    <p>Maquinaria ferrroviario</p>
+
+    <div class="datos">
+      <div class="dato">
+        <strong>Modelo</strong>
+        <p>Modelo de referencia</p>
+      </div>
+
+      <div class="dato">
+        <strong>Dimensiones</strong>
+        <p>1.3 × 2.18 × 0.74 m</p>
+      </div>
+
+      <div class="dato">
+        <strong>Escala del modelo</strong>
+        <p>1:1</p>
+      </div>
+
+      <div class="dato">
+        <strong>Aplicación</strong>
+        <p>Manejo de biomasa</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>
+```
