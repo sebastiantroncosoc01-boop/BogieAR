@@ -21,7 +21,23 @@
     header {
       background: #172536;
       color: white;
-      padding: 16px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .header-logo {
+      height: 45px;
+      width: auto;
+      background-color: #f4f5f7;
+      border-radius: 6px;
+      padding: 4px 8px;
     }
 
     main {
@@ -37,7 +53,7 @@
       min-height: 350px;
       background: white;
       border-radius: 12px;
-      position: relative; /* Necesario para ubicar el botón y el panel AR */
+      position: relative;
     }
 
     .panel {
@@ -69,7 +85,6 @@
       text-decoration: underline;
     }
 
-    /* --- ESTILOS DEL BOTÓN AR --- */
     #ar-button {
       padding: 12px 18px;
       border: none;
@@ -85,32 +100,66 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     }
 
-    /* --- ESTILOS DEL PANEL DENTRO DE AR (Solo Android WebXR) --- */
+    /* --- PANEL DE TEXTO EN AR --- */
     #ar-info-panel {
-      display: none; /* Oculto por defecto */
+      display: none;
       position: absolute;
       top: 16px;
       left: 16px;
-      right: 16px;
-      max-width: 320px;
+      max-width: 250px; /* Reducido un poco para no chocar con el logo */
       background: rgba(23, 37, 54, 0.9);
       color: white;
       padding: 16px;
       border-radius: 12px;
-      pointer-events: none; /* Para que no bloquee los toques en la pantalla */
+      pointer-events: none;
     }
 
     #ar-info-panel h3 { margin: 0 0 8px; font-size: 16px; }
     #ar-info-panel p { margin: 4px 0; font-size: 14px; line-height: 1.4; }
     #ar-info-panel a { color: #64b5f6; text-decoration: none; font-weight: bold; pointer-events: auto; }
 
-    /* Mostrar panel y ocultar botón cuando AR esté activo */
-    model-viewer.is-in-ar #ar-info-panel {
-      display: block;
+    /* --- MARCA DE AGUA EN AR --- */
+    #ar-watermark {
+      display: none; /* Oculto en la vista 3D normal de la web */
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 120px; /* Ajusta el tamaño de la marca de agua */
+      height: auto;
+      opacity: 0.75; /* Efecto de transparencia */
+      pointer-events: none; /* Evita que bloquee la interacción táctil con la máquina */
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente por si el logo oscuro no se ve bien sobre el entorno */
+      border-radius: 6px;
+      padding: 5px;
     }
 
+    /* Reglas de visibilidad al entrar en AR */
+    model-viewer.is-in-ar #ar-info-panel,
+    model-viewer.is-in-ar #ar-watermark {
+      display: block;
+    }
     model-viewer.is-in-ar #ar-button {
       display: none;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 12px 16px;
+      }
+      header h2 {
+        font-size: 1.2rem;
+      }
+      .header-logo {
+        height: 35px;
+      }
+      /* Ajusta el panel de texto en móviles para asegurar que no choque con el logo */
+      #ar-info-panel {
+        max-width: 200px; 
+      }
+      #ar-watermark {
+        width: 100px;
+      }
     }
   </style>
 </head>
@@ -119,10 +168,11 @@
 
 <header>
   <h2>Visualizador AR Bogie</h2>
+  <img src="image_b819e9.png" alt="Logo Pacific+ Vehicles" class="header-logo">
 </header>
 
 <main>
-  <h2>Bogie Cali</h2>
+  <h2>Bogie Ferrocarril del Pacifico</h2>
 
   <model-viewer
     id="bogie"
@@ -136,21 +186,22 @@
     shadow-intensity="1"
     exposure="1">
 
-    <!-- Botón para entrar a AR -->
     <button id="ar-button" slot="ar-button">
       Visualizar en mi espacio
     </button>
 
-    <!-- Panel de información superpuesto en AR -->
+    <!-- Panel de información izquierdo -->
     <div id="ar-info-panel">
       <h3>Bogie - Ferrocarril del Pacífico</h3>
       <p><strong>Créditos:</strong> Sebastian Troncoso y Juan Carlos Rengifo para Pacific+</p>
       <p><a href="https://www.pacificplus.co" target="_blank">www.pacificplus.co</a></p>
     </div>
 
+    <!-- Marca de agua derecha -->
+    <img id="ar-watermark" src="image_b819e9.png" alt="Marca de agua Pacific+">
+
   </model-viewer>
 
-  <!-- Ficha de información en la página web -->
   <section class="panel">
     <h2>Bogie - Ferrocarril del Pacífico</h2>
     <p><strong>Créditos:</strong> Sebastian Troncoso y Juan Carlos Rengifo para Pacific+</p>
@@ -161,7 +212,6 @@
 <script>
   const modelViewer = document.getElementById('bogie');
 
-  // Controla la visibilidad del panel de información cuando se entra y sale de AR
   modelViewer.addEventListener('ar-status', (event) => {
     if (event.detail.status === 'session-started') {
       modelViewer.classList.add('is-in-ar');
