@@ -106,7 +106,7 @@
       position: absolute;
       top: 16px;
       left: 16px;
-      max-width: 250px; /* Reducido un poco para no chocar con el logo */
+      max-width: 250px;
       background: rgba(23, 37, 54, 0.9);
       color: white;
       padding: 16px;
@@ -120,16 +120,16 @@
 
     /* --- MARCA DE AGUA EN AR --- */
     #ar-watermark {
-      display: none; /* Oculto en la vista 3D normal de la web */
+      display: none;
       position: absolute;
       top: 16px;
       right: 16px;
-      width: 120px; /* Ajusta el tamaño de la marca de agua */
+      width: 120px;
       height: auto;
-      opacity: 0.75; /* Efecto de transparencia */
-      pointer-events: none; /* Evita que bloquee la interacción táctil con la máquina */
+      opacity: 0.75;
+      pointer-events: none;
       z-index: 10;
-      background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente por si el logo oscuro no se ve bien sobre el entorno */
+      background: rgba(255, 255, 255, 0.8);
       border-radius: 6px;
       padding: 5px;
     }
@@ -153,7 +153,6 @@
       .header-logo {
         height: 35px;
       }
-      /* Ajusta el panel de texto en móviles para asegurar que no choque con el logo */
       #ar-info-panel {
         max-width: 200px; 
       }
@@ -168,11 +167,11 @@
 
 <header>
   <h2>Visualizador AR Bogie</h2>
-  <img src="image_b819e9.png" alt="Logo Pacific+ Vehicles" class="header-logo">
+  <img src="LogoPacific.jpeg" alt="Logo Pacific+ Vehicles" class="header-logo">
 </header>
 
 <main>
-  <h2>Bogie Ferrocarril del Pacifico</h2>
+  <h2>Bogie Cali</h2>
 
   <model-viewer
     id="bogie"
@@ -198,7 +197,7 @@
     </div>
 
     <!-- Marca de agua derecha -->
-    <img id="ar-watermark" src="image_b819e9.png" alt="Marca de agua Pacific+">
+    <img id="ar-watermark" src="LogoPacific.jpeg" alt="Marca de agua Pacific+">
 
   </model-viewer>
 
