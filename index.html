@@ -1,5 +1,3 @@
-
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -39,32 +37,40 @@
       min-height: 350px;
       background: white;
       border-radius: 12px;
+      position: relative; /* Necesario para ubicar el botón y el panel AR */
     }
 
     .panel {
       background: white;
       border-radius: 12px;
-      padding: 16px;
+      padding: 20px;
       margin-top: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .panel h2 {
+      margin-top: 0;
+      font-size: 1.3rem;
+      color: #172536;
     }
 
-    .datos {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+    .panel p {
+      margin: 8px 0;
+      line-height: 1.5;
     }
 
-    .dato {
-      background: #f0f3f6;
-      padding: 12px;
-      border-radius: 8px;
+    .panel a {
+      color: #1769aa;
+      text-decoration: none;
+      font-weight: bold;
     }
 
-    .dato p {
-      margin-bottom: 0;
+    .panel a:hover {
+      text-decoration: underline;
     }
 
-    .ar-button {
+    /* --- ESTILOS DEL BOTÓN AR --- */
+    #ar-button {
       padding: 12px 18px;
       border: none;
       border-radius: 8px;
@@ -72,12 +78,39 @@
       color: white;
       font-size: 16px;
       cursor: pointer;
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     }
 
-    @media (max-width: 600px) {
-      .datos {
-        grid-template-columns: 1fr;
-      }
+    /* --- ESTILOS DEL PANEL DENTRO DE AR (Solo Android WebXR) --- */
+    #ar-info-panel {
+      display: none; /* Oculto por defecto */
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      max-width: 320px;
+      background: rgba(23, 37, 54, 0.9);
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      pointer-events: none; /* Para que no bloquee los toques en la pantalla */
+    }
+
+    #ar-info-panel h3 { margin: 0 0 8px; font-size: 16px; }
+    #ar-info-panel p { margin: 4px 0; font-size: 14px; line-height: 1.4; }
+    #ar-info-panel a { color: #64b5f6; text-decoration: none; font-weight: bold; pointer-events: auto; }
+
+    /* Mostrar panel y ocultar botón cuando AR esté activo */
+    model-viewer.is-in-ar #ar-info-panel {
+      display: block;
+    }
+
+    model-viewer.is-in-ar #ar-button {
+      display: none;
     }
   </style>
 </head>
@@ -103,35 +136,40 @@
     shadow-intensity="1"
     exposure="1">
 
-    <button class="ar-button" slot="ar-button">
+    <!-- Botón para entrar a AR -->
+    <button id="ar-button" slot="ar-button">
       Visualizar en mi espacio
     </button>
 
+    <!-- Panel de información superpuesto en AR -->
+    <div id="ar-info-panel">
+      <h3>Bogie - Ferrocarril del Pacífico</h3>
+      <p><strong>Créditos:</strong> Sebastian Troncoso y Juan Carlos Rengifo para Pacific+</p>
+      <p><a href="https://www.pacificplus.co" target="_blank">www.pacificplus.co</a></p>
+    </div>
+
   </model-viewer>
 
+  <!-- Ficha de información en la página web -->
   <section class="panel">
-    <h2>Bogie</h2>
-    <p>Maquinaria ferrroviaria</p>
-
-    <div class="datos">
-      <div class="dato">
-        <strong>Modelo</strong>
-        <p>Modelo de referencia</p>
-      </div>
-
-      <div class="dato">
-        <strong>Dimensiones</strong>
-        <p>1.3 × 2.18 × 0.74 m</p>
-      </div>
-
-      <div class="dato">
-        <strong>Escala del modelo</strong>
-        <p>1:1</p>
-      </div>
-    </div>
+    <h2>Bogie - Ferrocarril del Pacífico</h2>
+    <p><strong>Créditos:</strong> Sebastian Troncoso y Juan Carlos Rengifo para Pacific+</p>
+    <p><a href="https://www.pacificplus.co" target="_blank">www.pacificplus.co</a></p>
   </section>
 </main>
 
+<script>
+  const modelViewer = document.getElementById('bogie');
+
+  // Controla la visibilidad del panel de información cuando se entra y sale de AR
+  modelViewer.addEventListener('ar-status', (event) => {
+    if (event.detail.status === 'session-started') {
+      modelViewer.classList.add('is-in-ar');
+    } else if (event.detail.status === 'not-presenting') {
+      modelViewer.classList.remove('is-in-ar');
+    }
+  });
+</script>
+
 </body>
 </html>
-```
